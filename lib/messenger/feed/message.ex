@@ -4,8 +4,8 @@ defmodule Messenger.Feed.Message do
 
   schema "messages" do
     field :text, :string
-    field :url, :string
-    field :username, :string
+    field :url, :string, default: nil
+    field :username, :string, default: "togmund"
 
     timestamps()
   end
@@ -13,7 +13,8 @@ defmodule Messenger.Feed.Message do
   @doc false
   def changeset(message, attrs) do
     message
-    |> cast(attrs, [:username, :text, :url])
-    |> validate_required([:username, :text, :url])
+    |> cast(attrs, [:text])
+    |> validate_required([:text])
+    |> validate_length(:text, min: 2, max: 150)
   end
 end
