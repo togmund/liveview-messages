@@ -7,7 +7,7 @@ defmodule MessengerWeb.MessageLive.MessageComponent do
       <td><%= @message.username %></td>
       <td><%= @message.text %></td>
       <td>
-        <%=  live_redirect "https://url.com/messages/#{@message.id}", to: Routes.message_show_path(@socket, :show, @message)%>
+        <%=  live_redirect "~/messages/#{@message.id}", to: Routes.message_show_path(@socket, :show, @message)%>
       </td>
 
       <td>

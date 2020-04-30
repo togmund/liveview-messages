@@ -9,6 +9,8 @@
     return_to: Routes.message_index_path(@socket, :index) %>
 <% end %>
 
+<span><%= live_patch "New Message", to: Routes.message_index_path(@socket, :new) %></span>
+
 <table>
   <thead>
     <tr>
@@ -21,11 +23,11 @@
     </tr>
   </thead>
   
-  <tbody id="messages">
+  <tbody id="messages" phx-update="prepend">
     <%= for message <- @messages do %>
     <%= live_component @socket, MessengerWeb.MessageLive.MessageComponent, id: message.id, message: message %>
     <% end %>
   </tbody>
 </table>
 
-<span><%= live_patch "New Message", to: Routes.message_index_path(@socket, :new) %></span>
+

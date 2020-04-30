@@ -6,7 +6,11 @@ defmodule MessengerWeb.MessageLive.Index do
 
   @impl true
   def mount(_params, _session, socket) do
-    {:ok, assign(socket, :messages, fetch_messages())}
+    if connected?(socket) do
+      Feed.subscribe()
+    end
+
+    {:ok, assign(socket, :messages, fetch_messages()), temporary_assigns: [messages: []]}
   end
 
   @impl true
@@ -40,7 +44,20 @@ defmodule MessengerWeb.MessageLive.Index do
     {:noreply, assign(socket, :messages, fetch_messages())}
   end
 
+  @impl true
+  def handle_info({:message_created, message}, socket) do
+    {:noreply, update(socket, :messages, fn messages -> [message | messages] end)}
+  end
+
+  def handle_info({:message_updated, message}, socket) do
+    {:noreply, update(socket, :messages, fn messages -> [message | messages] end)}
+  end
+
+  def handle_info({:message_deleted, _message}, socket) do
+    {:noreply, update(socket, :messages, fetch_messages())}
+  end
+
   defp fetch_messages do
-    Feed.list_messages()
+    Feed.list_messages_ordered()
   end
 end

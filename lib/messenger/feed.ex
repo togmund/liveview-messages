@@ -22,6 +22,19 @@ defmodule Messenger.Feed do
   end
 
   @doc """
+  Returns the list of messages in descending created_at timestamp
+
+  ## Examples
+
+      iex> list_messages_ordered()
+      [%Message{}, ...]
+
+  """
+  def list_messages_ordered do
+    Repo.all(from m in Message, order_by: [desc: m.inserted_at])
+  end
+
+  @doc """
   Gets a single message.
 
   Raises `Ecto.NoResultsError` if the Message does not exist.
@@ -53,6 +66,7 @@ defmodule Messenger.Feed do
     %Message{}
     |> Message.changeset(attrs)
     |> Repo.insert()
+    |> broadcast(:message_created)
   end
 
   @doc """
@@ -71,6 +85,7 @@ defmodule Messenger.Feed do
     message
     |> Message.changeset(attrs)
     |> Repo.update()
+    |> broadcast(:message_updated)
   end
 
   @doc """
@@ -87,6 +102,7 @@ defmodule Messenger.Feed do
   """
   def delete_message(%Message{} = message) do
     Repo.delete(message)
+    |> broadcast(:message_deleted)
   end
 
   @doc """
@@ -100,5 +116,18 @@ defmodule Messenger.Feed do
   """
   def change_message(%Message{} = message, attrs \\ %{}) do
     Message.changeset(message, attrs)
+  end
+
+  def subscribe do
+    Phoenix.PubSub.subscribe(Messenger.PubSub, "messages")
+  end
+
+  defp broadcast({:error, _reason} = error, _event) do
+    error
+  end
+
+  defp broadcast({:ok, message}, event) do
+    Phoenix.PubSub.broadcast(Messenger.PubSub, "messages", {event, message})
+    {:ok, message}
   end
 end

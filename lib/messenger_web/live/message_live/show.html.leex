@@ -21,11 +21,6 @@
     <%= @message.text %>
   </li>
 
-  <li>
-    <strong>Url:</strong>
-    <%= @message.url %>
-  </li>
-
 </ul>
 
 <span><%= live_patch "Edit", to: Routes.message_show_path(@socket, :edit, @message), class: "button" %></span>
