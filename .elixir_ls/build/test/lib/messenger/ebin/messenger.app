@@ -19,6 +19,7 @@
                         'Elixir.MessengerWeb.LiveHelpers',
                         'Elixir.MessengerWeb.MessageLive.FormComponent',
                         'Elixir.MessengerWeb.MessageLive.Index',
+                        'Elixir.MessengerWeb.MessageLive.MessageComponent',
                         'Elixir.MessengerWeb.MessageLive.Show',
                         'Elixir.MessengerWeb.ModalComponent',
                         'Elixir.MessengerWeb.PageLive',
