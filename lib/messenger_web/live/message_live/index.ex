@@ -54,7 +54,7 @@ defmodule MessengerWeb.MessageLive.Index do
   end
 
   def handle_info({:message_deleted, _message}, socket) do
-    {:noreply, update(socket, :messages, fn _messages -> fetch_messages() end)}
+    {:noreply, update(socket, :messages, fetch_messages())}
   end
 
   defp fetch_messages do
