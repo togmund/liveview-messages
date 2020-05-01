@@ -17,7 +17,7 @@ defmodule MessengerWeb.Router do
   scope "/", MessengerWeb do
     pipe_through :browser
 
-    live "/", PageLive, :index
+    live "/", MessageLive.Index, :index
 
     live "/messages", MessageLive.Index, :index
     live "/messages/new", MessageLive.Index, :new

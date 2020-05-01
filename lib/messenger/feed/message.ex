@@ -13,7 +13,7 @@ defmodule Messenger.Feed.Message do
   @doc false
   def changeset(message, attrs) do
     message
-    |> cast(attrs, [:text])
+    |> cast(attrs, [:username, :text])
     |> validate_required([:text])
     |> validate_length(:text, min: 2, max: 150)
   end
